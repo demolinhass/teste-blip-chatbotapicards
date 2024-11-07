@@ -4,17 +4,18 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Rota principal para a raiz do servidor
+app.get('/', (req, res) => {
+  res.send('API GitHub - Use /api/repos para obter repositórios.');
+});
 
 app.get('/api/repos', async (req, res) => {
   try {
-
     const response = await axios.get('https://api.github.com/orgs/takenet/repos', {
       params: { per_page: 100, sort: 'created', direction: 'asc' },
     });
 
-
     const csRepos = response.data.filter(repo => repo.language === 'C#').slice(0, 5);
-
 
     const reposData = csRepos.map(repo => ({
       name: repo.full_name,
